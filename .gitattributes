@@ -1,0 +1,3 @@
+**/*.js text eol=lf
+**/*.ts text eol=lf
+**/*.handlebars text eol=lf
