@@ -5,6 +5,7 @@ export interface ITemplateDelegate<T = any> {
 export interface IHandlebars {
   create(): IHandlebars
   compile<T = any>(input: any, options?: ICompileOptions): ITemplateDelegate<T>
+  registerPartial(name: string, template: string): void
 }
 
 export interface IRuntimeOptions {
