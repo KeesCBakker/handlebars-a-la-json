@@ -7,7 +7,7 @@
     "sourceMap": true,
     "strict": false,
     "outDir": "./dist",
-    "rootDir": ".",
+    "rootDir": "./src",
     "removeComments": false,
     "esModuleInterop" : true,
     "lib": [

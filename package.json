@@ -49,5 +49,7 @@
     "decache": "^4.6.2",
     "handlebars": "^4.7.8"
   },
-  "gitHead": "ec6edffc12294742cfaaab9c759747f5022b654a"
+  "files": [
+    "dist"
+  ]
 }
