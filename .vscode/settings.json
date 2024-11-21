@@ -1,0 +1,12 @@
+{
+    "files.exclude": {
+        "**/node_modules/": true,
+        "**/dist/": true,
+        "**/.vscode/": true,
+        "**/package-lock.json": true
+    },
+    "cSpell.words": [
+        "decache",
+        "postpublish"
+    ]
+}

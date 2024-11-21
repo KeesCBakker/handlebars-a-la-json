@@ -1,0 +1,49 @@
+{
+  "name": "handlebars-a-la-json",
+  "version": "1.5.7",
+  "description": "Handlebars is great for generating HTML. Let's use it to generate JSON!",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "mocha",
+    "mocha": "mocha -r ts-node/register",
+    "build": "del-cli dist & tsc",
+    "prepublishOnly": "npm run build & npm test & npm version patch",
+    "postpublish": "git push origin --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com:KeesCBakker/handlebars-a-la-json.git"
+  },
+  "keywords": [
+    "handlebars",
+    "JSON",
+    "templates"
+  ],
+  "author": "Kees C. Bakker (https://keestalkstech.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KeesCBakker/slack-ext/issues"
+  },
+  "homepage": "https://github.com/KeesCBakker/slack-ext#readme",
+  "devDependencies": {
+    "@types/chai": "^5.0.1",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.9.1",
+    "chai": "^4.5.0",
+    "cross-env": "^7.0.3",
+    "del-cli": "^6.0.0",
+    "mocha": "^10.8.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "better-error-message-for-json-parse": "^0.1.6",
+    "decache": "^4.6.2",
+    "handlebars": "^4.7.8"
+  },
+  "gitHead": "ec6edffc12294742cfaaab9c759747f5022b654a"
+}
