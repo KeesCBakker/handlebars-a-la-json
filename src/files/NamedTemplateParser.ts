@@ -4,9 +4,12 @@ import { INamedTemplateParser } from "./INamedTemplateParser"
 import { IHandlebars, ITemplateDelegate } from "../templating/makeHandlebarsBehave"
 
 export class NamedTemplateParser implements INamedTemplateParser {
-  private templates: Record<string, ITemplateDelegate<any>> = {}
+  private readonly templates: Record<string, ITemplateDelegate<any>> = {}
+  private readonly partialHandlebarParser: IHandlebars;
 
-  constructor(public handlebars: IHandlebars) {}
+  constructor(private handlebars: IHandlebars, partialHandlebarParser?: IHandlebars) {
+    this.partialHandlebarParser = partialHandlebarParser || handlebars;
+  }
 
   async loadTemplatesFromDirectory(templateDirectory: string): Promise<void> {
     let files = await fs.promises.readdir(templateDirectory)

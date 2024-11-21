@@ -23,9 +23,9 @@ export const defaultNumberOfDebugLines = Object.freeze({
  * @param {IOptions} [options=defaultNumberOfDebugLines] Option to influence errors.
  * @returns {IHandlebars} The Handlebars object.
  */
-export function createJsonHandlebars(options: IOptions = defaultNumberOfDebugLines): IHandlebars {
-  const myErrorOptions = options
-
+function createSimpleJsonHandlebars(
+  handler: (data: string, isPartial: boolean) => any
+): IHandlebars {
   const instance = createDefaultHandlebars()
   instance.Utils.escapeExpression = escapeJson
   ;(<any>instance).create = createJsonHandlebars
@@ -35,21 +35,26 @@ export function createJsonHandlebars(options: IOptions = defaultNumberOfDebugLin
     return (context: any, options: any): any => {
       let result = compiled(context, options)
       result = reformatJsonString(result)
-
-      if (result.startsWith('"') || result.startsWith("'")) {
-        return result
-      }
-
-      try {
-        result = safeJsonParse(result)
-        return result
-      } catch (ex) {
-        ex = changeError(ex, result, myErrorOptions)
-        throw ex
-      }
+      return handler(result, options?.partial)
     }
   }
   return instance
+}
+
+export function createJsonHandlebars(options: IOptions = defaultNumberOfDebugLines): IHandlebars {
+  return createSimpleJsonHandlebars((result: string, isPartial: boolean) => {
+    try {
+      const safeResult = safeJsonParse(result)
+      if (!isPartial) {
+        return safeResult;
+      }
+    } catch (ex) {
+      ex = changeError(ex, result, options)
+      throw ex
+    }
+
+    return result;
+  })
 }
 
 function reformatJsonString(str: string) {

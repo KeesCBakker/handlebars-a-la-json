@@ -33,7 +33,7 @@ describe("files/NamedTemplateParser.spec.ts", () => {
     expect(actual).to.eq(expected)
   })
 
-  it("JSON integration", () => {
+  it("JSON integration + partials", () => {
     // arrange
     const handlebars = createJsonHandlebars()
     const parser = new NamedTemplateParser(handlebars)

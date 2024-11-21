@@ -65,6 +65,23 @@ describe("templating/createJsonHandlebars.spec.ts", () => {
         `{ "message": "Hello Quinton &quot;Rampage&quot; Jacksons!" }`
       )
     })
+
+    it("Parse with quoted partial", () => {
+      // arrange
+      const handlebars = createJsonHandlebars().create()
+      const template = `{ "message": {{>partial}} }`
+      const data = { name: 'Quinton "Rampage" Jacksons' }
+
+      handlebars.registerPartial("partial", '"{{name}}"')
+
+      // act
+      const compiledTemplate = handlebars.compile(template)
+      const actual = compiledTemplate(data) as any
+
+      // assert
+      expect(actual).not.to.be.null
+      expect(actual.message).to.eql('Quinton "Rampage" Jacksons' )
+    })
   })
 
   describe("error handling", () => {
