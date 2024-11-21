@@ -1,6 +1,8 @@
 # Handlebars a la JSON
 Handlebars is a great and simple templating engine for generating HTML. But what if you need to generate JSON? That's what this package does.
 
+There is integration for partials. _Note: the result of every partial must be a valid JSON string._
+
 ## Installation
 Install it using NPM:
 ```sh
