@@ -1,15 +1,17 @@
 {
   "name": "handlebars-a-la-json",
-  "version": "1.5.7",
+  "version": "2.0.0",
   "description": "Handlebars is great for generating HTML. Let's use it to generate JSON!",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "mocha",
-    "mocha": "mocha -r ts-node/register",
     "build": "del-cli dist & tsc",
-    "prepublishOnly": "npm run build & npm test & npm version patch",
-    "postpublish": "git push origin --tags"
+    "prepublishOnly": "npm test",
+    "postpublish": "git push origin --tags",
+    "publish-patch": "npm run build && npm test && npm version patch && npm publish",
+    "publish-minor": "npm run build && npm test && npm version minor && npm publish",
+    "publish-major": "npm run build && npm test && npm version major && npm publish"
   },
   "repository": {
     "type": "git",
