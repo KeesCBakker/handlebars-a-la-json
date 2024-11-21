@@ -1,6 +1,6 @@
 {
   "name": "handlebars-a-la-json",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Handlebars is great for generating HTML. Let's use it to generate JSON!",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
