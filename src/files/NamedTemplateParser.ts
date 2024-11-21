@@ -5,10 +5,8 @@ import { IHandlebars, ITemplateDelegate } from "../templating/makeHandlebarsBeha
 
 export class NamedTemplateParser implements INamedTemplateParser {
   private readonly templates: Record<string, ITemplateDelegate<any>> = {}
-  private readonly partialHandlebarParser: IHandlebars;
 
-  constructor(private handlebars: IHandlebars, partialHandlebarParser?: IHandlebars) {
-    this.partialHandlebarParser = partialHandlebarParser || handlebars;
+  constructor(private handlebars: IHandlebars) {
   }
 
   async loadTemplatesFromDirectory(templateDirectory: string): Promise<void> {
