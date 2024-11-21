@@ -82,10 +82,48 @@ describe("templating/createJsonHandlebars.spec.ts", () => {
       expect(actual).not.to.be.null
       expect(actual.message).to.eql('Quinton "Rampage" Jacksons' )
     })
+
+    it("Parse with array-like partial, without array being part of the partial", () => {
+      // arrange
+      const handlebars = createJsonHandlebars().create()
+      const template = `{ "message": [{{>partial}}] }`
+
+      handlebars.registerPartial("partial", '{ "name": "one" }, { "name": "two" } ')
+
+      // act
+      const compiledTemplate = handlebars.compile(template)
+      const actual = compiledTemplate() as any
+
+      // assert
+      expect(actual).not.to.be.null
+      expect(actual.message).not.to.be.null;
+      expect(actual.message).to.be.an('array');
+      expect(actual.message[0].name).to.eql('one');
+      expect(actual.message[1].name).to.eql('two');
+    })
+
+    it("Parse with array-like partial, without end array being part of the partial", () => {
+      // arrange
+      const handlebars = createJsonHandlebars().create()
+      const template = `{ "message": [ {{>partial}} }`
+
+      handlebars.registerPartial("partial", '{ "name": "one" }, { "name": "two" } ]')
+
+      // act
+      const compiledTemplate = handlebars.compile(template)
+      const actual = compiledTemplate() as any
+
+      // assert
+      expect(actual).not.to.be.null
+      expect(actual.message).not.to.be.null;
+      expect(actual.message).to.be.an('array');
+      expect(actual.message[0].name).to.eql('one');
+      expect(actual.message[1].name).to.eql('two');
+    })
   })
 
   describe("error handling", () => {
-    it("forget a comma in an arry", () => {
+    it("forget a comma in an array", () => {
       // arrange
       const handlebars = createJsonHandlebars()
       const template = `{
@@ -159,7 +197,4 @@ describe("templating/createJsonHandlebars.spec.ts", () => {
       expect(actual.b).to.equal(data.name)
     })
   })
-  function escapeJson(txt: string) {
-    throw new Error("Function not implemented.")
-  }
 })

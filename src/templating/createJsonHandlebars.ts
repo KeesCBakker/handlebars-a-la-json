@@ -43,17 +43,20 @@ function createSimpleJsonHandlebars(
 
 export function createJsonHandlebars(options: IOptions = defaultNumberOfDebugLines): IHandlebars {
   return createSimpleJsonHandlebars((result: string, isPartial: boolean) => {
+
+    // a partial does not have to be JSON compatible,
+    // only the end result needs to be
+    if (isPartial) {
+      return result;
+    }
+
     try {
       const safeResult = safeJsonParse(result)
-      if (!isPartial) {
-        return safeResult;
-      }
+      return safeResult;
     } catch (ex) {
       ex = changeError(ex, result, options)
       throw ex
     }
-
-    return result;
   })
 }
 

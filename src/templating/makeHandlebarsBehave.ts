@@ -1,5 +1,5 @@
 export interface ITemplateDelegate<T = any> {
-  (context: T, options?: IRuntimeOptions): string
+  (context?: T, options?: IRuntimeOptions): string
 }
 
 export interface IHandlebars {
