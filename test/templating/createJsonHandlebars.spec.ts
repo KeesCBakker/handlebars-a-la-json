@@ -1,6 +1,7 @@
 import { expect } from "chai"
 import { create as createDefaultHandlebars } from "handlebars"
 import { createJsonHandlebars } from "../../src/templating/createJsonHandlebars"
+import fs from "fs"
 
 describe("templating/createJsonHandlebars.spec.ts", () => {
   describe("create", () => {
@@ -145,7 +146,7 @@ describe("templating/createJsonHandlebars.spec.ts", () => {
 2:             "blocks": [
 3:                 { "message": "Hello Alpha!" }
 4:                 { "message": "Hello Beta!" }
-------------------^
+-------------------^
 5:             ]
 6:         }`)
       }
@@ -168,8 +169,33 @@ describe("templating/createJsonHandlebars.spec.ts", () => {
 1: {
 2:             "a": "b"
 3:             "c": "d"
---------------^
+---------------^
 4: }`)
+      }
+    })
+  })
+
+  describe("error handling with line numbers beyond 10", async () => {
+    it("wrong double d", async () => {
+      // arrange
+      const handlebars = createJsonHandlebars()
+      const template = await fs.promises.readFile(__dirname + "/../files/templates/broken-home.handlebars")
+
+      // act
+      const compiledTemplate = handlebars.compile(template.toString())
+      try {
+        compiledTemplate()
+      } catch (ex) {
+        expect(ex.toString()).to.equal(`SyntaxError: Expected ',' or '}' after property value in JSON at position 434
+17:             "type": "plain_text",
+18:             "text": ":Provision Database"
+19:           }
+20:         }
+21:       ]dd
+-----------^
+22:     }
+23:   ]
+24: }`)
       }
     })
   })

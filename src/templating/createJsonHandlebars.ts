@@ -103,6 +103,15 @@ function changeError(ex: Error, json: string, options: IOptions) {
   }
 
   messages.unshift(firstMsg)
+
+  // correct for line numbers
+  let dashIndex = messages.findIndex(m => /\-*\^/.test(m))
+  if (dashIndex > 2) {
+    let previousLine = messages[dashIndex - 1]
+    let previousLineNumber = parseInt(previousLine).toString();
+    messages[dashIndex] = "-".repeat(previousLineNumber.length) + messages[dashIndex]
+  }
+
   ex.message = messages.join("\n")
 
   return ex
