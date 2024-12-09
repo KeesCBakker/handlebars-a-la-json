@@ -81,7 +81,7 @@ describe("templating/createJsonHandlebars.spec.ts", () => {
 
       // assert
       expect(actual).not.to.be.null
-      expect(actual.message).to.eql('Quinton "Rampage" Jacksons' )
+      expect(actual.message).to.eql('Quinton "Rampage" Jacksons')
     })
 
     it("Parse with array-like partial, without array being part of the partial", () => {
@@ -97,10 +97,10 @@ describe("templating/createJsonHandlebars.spec.ts", () => {
 
       // assert
       expect(actual).not.to.be.null
-      expect(actual.message).not.to.be.null;
-      expect(actual.message).to.be.an('array');
-      expect(actual.message[0].name).to.eql('one');
-      expect(actual.message[1].name).to.eql('two');
+      expect(actual.message).not.to.be.null
+      expect(actual.message).to.be.an("array")
+      expect(actual.message[0].name).to.eql("one")
+      expect(actual.message[1].name).to.eql("two")
     })
 
     it("Parse with array-like partial, without end array being part of the partial", () => {
@@ -116,10 +116,10 @@ describe("templating/createJsonHandlebars.spec.ts", () => {
 
       // assert
       expect(actual).not.to.be.null
-      expect(actual.message).not.to.be.null;
-      expect(actual.message).to.be.an('array');
-      expect(actual.message[0].name).to.eql('one');
-      expect(actual.message[1].name).to.eql('two');
+      expect(actual.message).not.to.be.null
+      expect(actual.message).to.be.an("array")
+      expect(actual.message[0].name).to.eql("one")
+      expect(actual.message[1].name).to.eql("two")
     })
   })
 

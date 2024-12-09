@@ -6,8 +6,7 @@ import { IHandlebars, ITemplateDelegate } from "../templating/makeHandlebarsBeha
 export class NamedTemplateParser implements INamedTemplateParser {
   private readonly templates: Record<string, ITemplateDelegate<any>> = {}
 
-  constructor(private handlebars: IHandlebars) {
-  }
+  constructor(private handlebars: IHandlebars) {}
 
   async loadTemplatesFromDirectory(templateDirectory: string): Promise<void> {
     let files = await fs.promises.readdir(templateDirectory)
@@ -26,7 +25,7 @@ export class NamedTemplateParser implements INamedTemplateParser {
     try {
       return compileTemplate(templateData) as R
     } catch (ex) {
-      throw new Error(`Template invalid '${name}'. Message: "${ex}". Stack:\n${ex.stack}\n`)
+      throw new Error(`Template invalid: ${name}`, { cause: ex })
     }
   }
 

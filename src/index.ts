@@ -14,5 +14,5 @@ export {
   IHandlebars,
   IRuntimeOptions,
   NamedTemplateParser,
-  INamedTemplateParser,
+  INamedTemplateParser
 }

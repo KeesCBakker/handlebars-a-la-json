@@ -23,9 +23,7 @@ export const defaultNumberOfDebugLines = Object.freeze({
  * @param {IOptions} [options=defaultNumberOfDebugLines] Option to influence errors.
  * @returns {IHandlebars} The Handlebars object.
  */
-function createSimpleJsonHandlebars(
-  handler: (data: string, isPartial: boolean) => any
-): IHandlebars {
+function createSimpleJsonHandlebars(handler: (data: string, isPartial: boolean) => any): IHandlebars {
   const instance = createDefaultHandlebars()
   instance.Utils.escapeExpression = escapeJson
   ;(<any>instance).create = createJsonHandlebars
@@ -43,16 +41,15 @@ function createSimpleJsonHandlebars(
 
 export function createJsonHandlebars(options: IOptions = defaultNumberOfDebugLines): IHandlebars {
   return createSimpleJsonHandlebars((result: string, isPartial: boolean) => {
-
     // a partial does not have to be JSON compatible,
     // only the end result needs to be
     if (isPartial) {
-      return result;
+      return result
     }
 
     try {
       const safeResult = safeJsonParse(result)
-      return safeResult;
+      return safeResult
     } catch (ex) {
       ex = changeError(ex, result, options)
       throw ex
@@ -108,7 +105,7 @@ function changeError(ex: Error, json: string, options: IOptions) {
   let dashIndex = messages.findIndex(m => /\-*\^/.test(m))
   if (dashIndex > 2) {
     let previousLine = messages[dashIndex - 1]
-    let previousLineNumber = parseInt(previousLine).toString();
+    let previousLineNumber = parseInt(previousLine).toString()
     messages[dashIndex] = "-".repeat(previousLineNumber.length) + messages[dashIndex]
   }
 
