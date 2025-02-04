@@ -1,4 +1,6 @@
 import decache from "decache"
+import { existsSync, mkdirSync, unlinkSync, writeFileSync } from "fs"
+import { dirname } from "path"
 
 decache("handlebars")
 import { create as createDefaultHandlebars } from "handlebars"
@@ -10,6 +12,7 @@ import { escapeJson } from "./utils"
 
 export interface IOptions {
   numberOfDebugLinesInError: number
+  debugFilePath?: string | undefined
 }
 
 export const defaultNumberOfDebugLines = Object.freeze({
@@ -48,6 +51,19 @@ export function createJsonHandlebars(options: IOptions = defaultNumberOfDebugLin
     }
 
     try {
+      if (options.debugFilePath) {
+        const dir = dirname(options.debugFilePath)
+
+        // Ensure directory exists
+        if (!existsSync(dir)) {
+          mkdirSync(dir, { recursive: true })
+        } else if (existsSync(options.debugFilePath)) {
+          unlinkSync(options.debugFilePath)
+        }
+
+        writeFileSync(options.debugFilePath, result)
+      }
+
       const safeResult = safeJsonParse(result)
       return safeResult
     } catch (ex) {

@@ -1,7 +1,7 @@
 import { expect } from "chai"
 import { create as createDefaultHandlebars } from "handlebars"
 import { NamedTemplateParser } from "../../src/files/NamedTemplateParser"
-import { createJsonHandlebars } from "../../src/templating/createJsonHandlebars"
+import { createJsonHandlebars, IOptions } from "../../src/templating/createJsonHandlebars"
 import fs from "fs"
 
 describe("files/NamedTemplateParser.spec.ts", () => {
@@ -76,6 +76,35 @@ describe("files/NamedTemplateParser.spec.ts", () => {
 22:     }
 23:   ]
 24: }`)
+    }
+  })
+
+  it("Test debug file", async () => {
+    // arrange
+    const debugFilePath = __dirname + "/test.tmp"
+
+    if (fs.existsSync(debugFilePath)) {
+      fs.rmSync(debugFilePath);
+    }
+
+    const options : IOptions = {numberOfDebugLinesInError: 3, debugFilePath }
+    const handlebars = createJsonHandlebars(options)
+    const parser = new NamedTemplateParser(handlebars)
+    const template = await fs.promises.readFile(__dirname + "/../files/templates/broken-home.handlebars")
+
+    parser.addNamedTemplate("broken-home", template.toString())
+
+    // act
+    try {
+      parser.parse("broken-home", {})
+    } catch (ex) {
+      let exists = fs.existsSync(debugFilePath);
+      expect(exists).to.eq(true)
+    }
+    finally {
+      if (fs.existsSync(debugFilePath)) {
+        fs.rmSync(debugFilePath);
+      }
     }
   })
 })
