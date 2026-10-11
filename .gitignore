@@ -58,3 +58,4 @@ packages/ste-simple-events/src/**/*.js
 packages/strongly-typed-events/src/**/*.js
 *.tgz
 *.tmp
+opencode.json
