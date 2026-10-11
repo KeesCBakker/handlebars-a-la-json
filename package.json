@@ -1,22 +1,23 @@
 {
   "name": "handlebars-a-la-json",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "description": "Handlebars is great for generating HTML. Let's use it to generate JSON!",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "mocha",
-    "build": "del-cli dist & tsc",
-    "prepublishOnly": "npm test & npm run build",
+    "test": "npm run build && node --test",
+    "clean": "node scripts/clean.mjs",
+    "build": "npm run clean && tsc",
+    "prepublishOnly": "npm test",
     "postpublish": "git push origin --tags",
-    "publish-patch": "npm run build && npm test && npm version patch && npm publish",
-    "publish-minor": "npm run build && npm test && npm version minor && npm publish",
-    "publish-major": "npm run build && npm test && npm version major && npm publish",
+    "publish-patch": "npm test && npm version patch && npm publish",
+    "publish-minor": "npm test && npm version minor && npm publish",
+    "publish-major": "npm test && npm version major && npm publish",
     "format": "prettier --config .prettierrc {test,src}/**/*.ts --write"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com:KeesCBakker/handlebars-a-la-json.git"
+    "url": "git+https://github.com/KeesCBakker/handlebars-a-la-json.git"
   },
   "keywords": [
     "handlebars",
@@ -26,23 +27,16 @@
   "author": "Kees C. Bakker (https://keestalkstech.com)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/KeesCBakker/slack-ext/issues"
+    "url": "https://github.com/KeesCBakker/handlebars-a-la-json/issues"
   },
-  "homepage": "https://github.com/KeesCBakker/slack-ext#readme",
+  "homepage": "https://github.com/KeesCBakker/handlebars-a-la-json#readme",
   "devDependencies": {
-    "@types/chai": "^4",
-    "@types/mocha": "^10",
-    "@types/node": "^18",
-    "chai": "^4",
-    "cross-env": "^7",
-    "del-cli": "^6",
-    "mocha": "^10",
-    "prettier": "^3.3",
-    "ts-node": "^10.9.2",
-    "typescript": "^5"
+    "@types/node": "^26",
+    "prettier": "^3.9",
+    "typescript": "^7"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "dependencies": {
     "better-error-message-for-json-parse": "^0.1.6",

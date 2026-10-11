@@ -1,7 +1,8 @@
-import { expect } from "chai"
-import { escapeJson } from "../../src/templating/utils"
+import { strict as assert } from "node:assert"
+import { describe, it } from "node:test"
+import { escapeJson } from "../../dist/templating/utils.js"
 
-describe("templating/utils.spec.ts", () => {
+describe("templating/utils.spec.mjs", () => {
   it("escape enters", () => {
     // arrange
     const txt = "This\nis\nso\ncool!"
@@ -10,7 +11,7 @@ describe("templating/utils.spec.ts", () => {
     const actual = escapeJson(txt)
 
     // assert
-    expect(actual).to.equal("This\\nis\\nso\\ncool!")
+    assert.equal(actual, "This\\nis\\nso\\ncool!")
   })
 
   it("escape quotes", () => {
@@ -21,6 +22,6 @@ describe("templating/utils.spec.ts", () => {
     const actual = escapeJson(txt)
 
     // assert
-    expect(actual).to.equal('Einstein: \\"Uasually I\'m misquoted.\\"')
+    assert.equal(actual, 'Einstein: \\"Uasually I\'m misquoted.\\"')
   })
 })

@@ -1,10 +1,13 @@
-import { expect } from "chai"
-import { create as createDefaultHandlebars } from "handlebars"
-import { NamedTemplateParser } from "../../src/files/NamedTemplateParser"
-import { createJsonHandlebars, IOptions } from "../../src/templating/createJsonHandlebars"
-import fs from "fs"
+import { strict as assert } from "node:assert"
+import { describe, it } from "node:test"
+import handlebarsPackage from "handlebars"
+import { NamedTemplateParser } from "../../dist/files/NamedTemplateParser.js"
+import { createJsonHandlebars } from "../../dist/templating/createJsonHandlebars.js"
+import fs from "node:fs"
 
-describe("files/NamedTemplateParser.spec.ts", () => {
+const createDefaultHandlebars = handlebarsPackage.create
+
+describe("files/NamedTemplateParser.spec.mjs", () => {
   it("Parse directory async", async () => {
     // arrange
     const handlebars = createDefaultHandlebars()
@@ -16,7 +19,7 @@ describe("files/NamedTemplateParser.spec.ts", () => {
 
     // assert
     const expected = `This is a list: Alpha, Beta`
-    expect(actual).to.eq(expected)
+    assert.equal(actual, expected)
   })
 
   it("Manually added + partials", () => {
@@ -31,7 +34,7 @@ describe("files/NamedTemplateParser.spec.ts", () => {
 
     // assert
     const expected = `This is a list: Alpha, Beta`
-    expect(actual).to.eq(expected)
+    assert.equal(actual, expected)
   })
 
   it("JSON integration + partials", () => {
@@ -48,15 +51,15 @@ describe("files/NamedTemplateParser.spec.ts", () => {
     const actual = parser.parse("main", { items: [{ name: "Alpha" }, { name: "Beta" }] })
 
     // assert
-    expect(actual.count).to.eq(2)
-    expect(actual.list).to.deep.eq(["-Alpha", "-Beta"])
+    assert.equal(actual.count, 2)
+    assert.deepEqual(actual.list, ["-Alpha", "-Beta"])
   })
 
   it("Invalid home", async () => {
     // arrange
     const handlebars = createJsonHandlebars()
     const parser = new NamedTemplateParser(handlebars)
-    const template = await fs.promises.readFile(__dirname + "/../files/templates/broken-home.handlebars")
+    const template = await fs.promises.readFile(import.meta.dirname + "/../files/templates/broken-home.handlebars")
 
     parser.addNamedTemplate("broken-home", template.toString())
 
@@ -65,8 +68,8 @@ describe("files/NamedTemplateParser.spec.ts", () => {
       parser.parse("broken-home", {})
     } catch (ex) {
       // assert
-      expect(ex.message).to.eq("Template invalid: broken-home")
-      expect(ex.cause.message).to.eq(`Expected ',' or '}' after property value in JSON at position 434
+      assert.equal(ex.message, "Template invalid: broken-home")
+      assert.equal(ex.cause.message, `Expected ',' or '}' after property value in JSON at position 434 (line 21 column 8)
 17:             "type": "plain_text",
 18:             "text": ":Provision Database"
 19:           }
@@ -81,27 +84,23 @@ describe("files/NamedTemplateParser.spec.ts", () => {
 
   it("Test debug file", async () => {
     // arrange
-    const debugFilePath = __dirname + "/test.tmp"
+    const debugFilePath = import.meta.dirname + "/test.tmp"
 
     if (fs.existsSync(debugFilePath)) {
       fs.rmSync(debugFilePath);
     }
 
-    const options : IOptions = {numberOfDebugLinesInError: 3, debugFilePath }
+    const options = { numberOfDebugLinesInError: 3, debugFilePath }
     const handlebars = createJsonHandlebars(options)
     const parser = new NamedTemplateParser(handlebars)
-    const template = await fs.promises.readFile(__dirname + "/../files/templates/broken-home.handlebars")
+    const template = await fs.promises.readFile(import.meta.dirname + "/../files/templates/broken-home.handlebars")
 
     parser.addNamedTemplate("broken-home", template.toString())
 
-    // act
     try {
-      parser.parse("broken-home", {})
-    } catch (ex) {
-      let exists = fs.existsSync(debugFilePath);
-      expect(exists).to.eq(true)
-    }
-    finally {
+      assert.throws(() => parser.parse("broken-home", {}), { message: "Template invalid: broken-home" })
+      assert.ok(fs.existsSync(debugFilePath))
+    } finally {
       if (fs.existsSync(debugFilePath)) {
         fs.rmSync(debugFilePath);
       }
