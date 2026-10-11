@@ -64,10 +64,7 @@ describe("files/NamedTemplateParser.spec.mjs", () => {
     parser.addNamedTemplate("broken-home", template.toString())
 
     // act
-    try {
-      parser.parse("broken-home", {})
-    } catch (ex) {
-      // assert
+    assert.throws(() => parser.parse("broken-home", {}), (ex) => {
       assert.equal(ex.message, "Template invalid: broken-home")
       assert.equal(ex.cause.message, `Expected ',' or '}' after property value in JSON at position 434 (line 21 column 8)
 17:             "type": "plain_text",
@@ -79,7 +76,8 @@ describe("files/NamedTemplateParser.spec.mjs", () => {
 22:     }
 23:   ]
 24: }`)
-    }
+      return true
+    })
   })
 
   it("Test debug file", async () => {

@@ -141,9 +141,7 @@ describe("templating/createJsonHandlebars.spec.mjs", () => {
 
       // act
       const compiledTemplate = handlebars.compile(template)
-      try {
-        compiledTemplate(data)
-      } catch (ex) {
+      assert.throws(() => compiledTemplate(data), (ex) => {
         assert.equal(ex.toString(), `SyntaxError: Expected ',' or ']' after array element in JSON at position 88 (line 4 column 17)
 1: {
 2:             "blocks": [
@@ -152,7 +150,8 @@ describe("templating/createJsonHandlebars.spec.mjs", () => {
 -------------------^
 5:             ]
 6:         }`)
-      }
+        return true
+      })
     })
 
     it("correct for enters", () => {
@@ -165,16 +164,15 @@ describe("templating/createJsonHandlebars.spec.mjs", () => {
 
       // act
       const compiledTemplate = handlebars.compile(template)
-      try {
-        compiledTemplate({})
-      } catch (ex) {
+      assert.throws(() => compiledTemplate({}), (ex) => {
         assert.equal(ex.toString(), `SyntaxError: Expected ',' or '}' after property value in JSON at position 35 (line 3 column 13)
 1: {
 2:             "a": "b"
 3:             "c": "d"
 ---------------^
 4: }`)
-      }
+        return true
+      })
     })
   })
 
@@ -186,9 +184,7 @@ describe("templating/createJsonHandlebars.spec.mjs", () => {
 
       // act
       const compiledTemplate = handlebars.compile(template.toString())
-      try {
-        compiledTemplate()
-      } catch (ex) {
+      assert.throws(() => compiledTemplate(), (ex) => {
         assert.equal(ex.toString(), `SyntaxError: Expected ',' or '}' after property value in JSON at position 434 (line 21 column 8)
 17:             "type": "plain_text",
 18:             "text": ":Provision Database"
@@ -199,7 +195,8 @@ describe("templating/createJsonHandlebars.spec.mjs", () => {
 22:     }
 23:   ]
 24: }`)
-      }
+        return true
+      })
     })
   })
 
